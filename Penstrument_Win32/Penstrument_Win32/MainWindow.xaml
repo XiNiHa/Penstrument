@@ -9,7 +9,7 @@
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
         <Canvas Width="1300" Height="800">
-            <RelativePanel x:Name="pointer" Height="150" Width="150" Canvas.Left="0" Canvas.Top="0">
+            <RelativePanel x:Name="pointer" Height="200" Width="200" Canvas.Left="0" Canvas.Top="0">
                 <Ellipse x:Name="outerCircle" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"  Stroke="LightGray" StrokeThickness="3" Width="100"/>
                 <Ellipse Height="50" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Stroke="Gray" StrokeThickness="3" Width="50"/>
             </RelativePanel>

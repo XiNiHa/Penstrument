@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.128
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Penstrument_Win32 (Package)", "Penstrument_Win32\Penstrument_Win32 (Package)\Penstrument_Win32 (Package).wapproj", "{90EFDC8A-02CF-4EDE-94ED-1286C10BF43B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Penstrument_Win32", "Penstrument_Win32\Penstrument_Win32\Penstrument_Win32.csproj", "{695AB0CD-46E2-481F-866D-4C17AF609DD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Penstrument_Win32", "Penstrument_Win32\Penstrument_Win32\Penstrument_Win32.csproj", "{695AB0CD-46E2-481F-866D-4C17AF609DD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
