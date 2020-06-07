@@ -7,15 +7,18 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d">
 
-    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Canvas Width="1300" Height="800">
+    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Canvas x:Name="theCanvas" Grid.Column="0">
             <RelativePanel x:Name="pointer" Height="200" Width="200" Canvas.Left="0" Canvas.Top="0">
                 <Ellipse x:Name="outerCircle" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"  Stroke="LightGray" StrokeThickness="3" Width="100"/>
                 <Ellipse Height="50" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Stroke="Gray" StrokeThickness="3" Width="50"/>
             </RelativePanel>
-            <Rectangle Width="1300" Height="800" Stroke="Gray" StrokeThickness="5" RadiusX="30" RadiusY="30"/>
-            <Rectangle x:Name="tabletCanvas" Width="1200" Height="700" Canvas.Left="50" Canvas.Top="50" Canvas.ZIndex="-1" Fill="White"  Stroke="LightGray" StrokeThickness="5" RadiusX="10" RadiusY="10"/>
+            <Rectangle x:Name="outerFrame" Canvas.Top="10" Canvas.Left="10"  Stroke="Gray" StrokeThickness="5" RadiusX="30" RadiusY="30"/>
+            <Rectangle x:Name="innerFrame" Canvas.Top="30" Canvas.Left="30"  Canvas.ZIndex="-1" Fill="White"  Stroke="LightGray" StrokeThickness="5" RadiusX="10" RadiusY="10"/>
         </Canvas>
-        <Button Content="Pulse CC 0" Click="PulseCC0"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="1">
+            <Button Content="Pulse CC 0" Click="PulseCC0"/>
+            <Button Content="Pulse CC 1" Click="PulseCC1"/>
+        </StackPanel>
     </StackPanel>
 </Window>
