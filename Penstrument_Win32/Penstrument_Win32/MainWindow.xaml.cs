@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
+using System.Collections.Generic;
 using TobiasErichsen.teVirtualMIDI;
+using WinRT;
 
 namespace Penstrument_Win32
 {
@@ -10,7 +12,43 @@ namespace Penstrument_Win32
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        TeVirtualMIDI midiPort = new TeVirtualMIDI("Penstrument MIDI Port");
+        public static TeVirtualMIDI MIDIPort { get; } = new TeVirtualMIDI("Penstrument MIDI Port");
+
+        List<AxisData> AxisDatas { get; } = new List<AxisData>()
+        {
+            new AxisData("X")
+            {
+                ValueSupplier = point => point.Position.X,
+                MaxSupplier = v => v.ActualWidth
+            },
+            new AxisData("Y")
+            {
+                ValueSupplier = point => point.Position.Y,
+                MaxSupplier = v => v.ActualHeight
+            },
+            new AxisData("Pressure")
+            {
+                ValueSupplier = point => point.Properties.Pressure,
+                MaxSupplier = v => 1.0
+            }
+        };
+
+        List<BoundValue> BoundValues { get; } = new List<BoundValue>()
+        {
+            new MIDIBoundValue("None", false),
+            new MIDIBoundValue("Pitch Bend", false)
+            {
+                Builder = newValue => new byte[]{ 0b11100000, 0, newValue }
+            },
+            new MIDIBoundValue("CC 0", true)
+            {
+                Builder = newValue => new byte[]{ 0b10110000, 0, newValue }
+            },
+            new MIDIBoundValue("CC 1", true)
+            {
+                Builder = newValue => new byte[]{ 0b10110000, 1, newValue }
+            },
+        };
 
         public MainWindow()
         {
@@ -34,9 +72,11 @@ namespace Penstrument_Win32
             pointer.SetValue(Canvas.TopProperty, currentPoint.Position.Y - 70);
             outerCircle.Width = 100 * (currentPoint.Properties.Pressure + 1);
             outerCircle.Height = 100 * (currentPoint.Properties.Pressure + 1);
-            midiPort.sendCommand(new byte[] { 0b11100000, 0, (byte)(currentPoint.Position.X / innerFrame.ActualWidth * 127) });
-            midiPort.sendCommand(new byte[] { 0b10110000, 0, (byte)(currentPoint.Position.Y / innerFrame.ActualHeight * 127) });
-            midiPort.sendCommand(new byte[] { 0b10110000, 1, (byte)(currentPoint.Properties.Pressure * 127) });
+
+            foreach(var axis in AxisDatas)
+            {
+                axis.BoundVariable?.OnTrigger(axis.ValueSupplier(currentPoint), axis.MaxSupplier(innerFrame));
+            }
         }
 
         private void UpdateSizes(double rootWidth, double rootHeight)
@@ -51,15 +91,22 @@ namespace Penstrument_Win32
             innerFrame.Height = outerFrame.Height - 40;
         }
 
-        private void PulseCC0(object sender, RoutedEventArgs e)
+        private void AxisComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            midiPort.sendCommand(new byte[] { 0b10110000, 0, 127 / 2 });
+            boundComboBox.SelectedValue = axisComboBox.SelectedValue?.As<AxisData>().BoundVariable ?? BoundValues[0];
         }
 
-        private void PulseCC1(object sender, RoutedEventArgs e)
+        private void BoundComboBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            midiPort.sendCommand(new byte[] { 0b10110000, 1, 127 / 2 });
+            var boundValue = boundComboBox.SelectedValue?.As<BoundValue>() ?? BoundValues[0];
+            axisComboBox.SelectedValue.As<AxisData>().BoundVariable = boundValue;
+            pulseButton.Visibility = boundValue.NeedPulse ? Visibility.Visible : Visibility.Collapsed;
+            pulseButton.Content = "Pulse " + boundValue.Name;
         }
 
+        private void PulseButton_Click(object sender, RoutedEventArgs e)
+        {
+            axisComboBox.SelectedValue.As<AxisData>().BoundVariable.OnTrigger(0, axisComboBox.SelectedValue.As<AxisData>().MaxSupplier(innerFrame));
+        }
     }
 }

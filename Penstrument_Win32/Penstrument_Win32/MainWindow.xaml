@@ -13,12 +13,13 @@
                 <Ellipse x:Name="outerCircle" Height="100" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True"  Stroke="LightGray" StrokeThickness="3" Width="100"/>
                 <Ellipse Height="50" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" Stroke="Gray" StrokeThickness="3" Width="50"/>
             </RelativePanel>
-            <Rectangle x:Name="outerFrame" Canvas.Top="10" Canvas.Left="10"  Stroke="Gray" StrokeThickness="5" RadiusX="30" RadiusY="30"/>
-            <Rectangle x:Name="innerFrame" Canvas.Top="30" Canvas.Left="30"  Canvas.ZIndex="-1" Fill="White"  Stroke="LightGray" StrokeThickness="5" RadiusX="10" RadiusY="10"/>
+            <Rectangle x:Name="outerFrame" Canvas.Top="10" Canvas.Left="10" Stroke="Gray" StrokeThickness="5" RadiusX="30" RadiusY="30"/>
+            <Rectangle x:Name="innerFrame" Canvas.Top="30" Canvas.Left="30" Canvas.ZIndex="-1" Fill="White" Stroke="LightGray" StrokeThickness="5" RadiusX="10" RadiusY="10"/>
         </Canvas>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"  Grid.Column="1">
-            <Button Content="Pulse CC 0" Click="PulseCC0"/>
-            <Button Content="Pulse CC 1" Click="PulseCC1"/>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
+            <ComboBox x:Name="axisComboBox" ItemsSource="{x:Bind AxisDatas}" DisplayMemberPath="Name" Header="Axis" Width="200" SelectionChanged="AxisComboBox_SelectionChanged" />
+            <ComboBox x:Name="boundComboBox" ItemsSource="{x:Bind BoundValues}" DisplayMemberPath="Name" Header="MIDI Message / Variable" Width="200" SelectionChanged="BoundComboBox_SelectionChanged" />
+            <Button x:Name="pulseButton" Click="PulseButton_Click" Visibility="Collapsed"/>
         </StackPanel>
     </StackPanel>
 </Window>
