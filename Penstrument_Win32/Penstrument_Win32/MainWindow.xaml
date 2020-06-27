@@ -18,8 +18,46 @@
         </Canvas>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1">
             <ComboBox x:Name="axisComboBox" ItemsSource="{x:Bind AxisDatas}" DisplayMemberPath="Name" Header="Axis" Width="200" SelectionChanged="AxisComboBox_SelectionChanged" />
-            <ComboBox x:Name="boundComboBox" ItemsSource="{x:Bind BoundValues}" DisplayMemberPath="Name" Header="MIDI Message / Variable" Width="200" SelectionChanged="BoundComboBox_SelectionChanged" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="boundTextBox" Header="Value Binding" IsReadOnly="True" Width="175"/>
+                <Button Click="BoundButton_Click" Content="..." Width="25" VerticalAlignment="Bottom"/>
+            </StackPanel>
+            
+            <Slider x:Name="minSlider" Header="Lower Limit" Width="200" Maximum="127" ValueChanged="MinSlider_ValueChanged"/>
+            <Slider x:Name="maxSlider" Header="Upper Limit" Width="200" Maximum="127" ValueChanged="MaxSlider_ValueChanged"/>
             <Button x:Name="pulseButton" Click="PulseButton_Click" Visibility="Collapsed"/>
         </StackPanel>
+        
+        
+        <!-- Bound Value Dialog -->
+        <ContentDialog x:Name="boundValueDialog"
+                   PrimaryButtonText="Create"
+                   CloseButtonText="Cancel">
+            <StackPanel>
+                <ComboBox x:Name="boundComboBox" ItemsSource="{x:Bind BoundTypes}" Header="Type" Width="200" SelectionChanged="BoundComboBox_SelectionChanged" />
+                
+                <!-- Note I/O -->
+                <StackPanel x:Name="noteIOPanel" Visibility="Collapsed">
+                    <StackPanel Orientation="Horizontal">
+                        <NumberBox x:Name="noteINumberBox" Header="Note In Velocity/Variable ID" SpinButtonPlacementMode="Compact"/>
+                        <ToggleSwitch x:Name="noteISwitch" OffContent="Value" OnContent="Variable ID"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <NumberBox x:Name="noteONumberBox" Header="Note Out Velocity/Variable ID" SpinButtonPlacementMode="Compact"/>
+                        <ToggleSwitch x:Name="noteOSwitch" OffContent="Value" OnContent="Variable ID" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- CC -->
+                <StackPanel x:Name="ccPanel" Visibility="Collapsed">
+                    <NumberBox x:Name="ccNumberBox" Header="CC Number" SpinButtonPlacementMode="Compact"/>
+                </StackPanel>
+
+                <!-- Variable -->
+                <StackPanel x:Name="variablePanel" Visibility="Collapsed">
+                    <NumberBox x:Name="variableIDBox" Header="Variable ID" SpinButtonPlacementMode="Compact"/>
+                </StackPanel>
+            </StackPanel>
+        </ContentDialog>
     </StackPanel>
 </Window>
